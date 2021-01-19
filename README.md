@@ -4,7 +4,7 @@ In order to run the KIT VariableCalculator follow these instructions to set up e
     cmsrel CMSSW_10_2_18 
     cd $CMSSW_BASE/src
     cmsenv
-    git clone https://github.com/cms-nanoAOD/nanoAOD-tools.git PhysicsTools/NanoAODTools
+    git clone --branch KIT-VarCalc-ttH git@github.com:kit-cn-cms/nanoAOD-tools.git PhysicsTools/NanoAODTools
     cd PhysicsTools/NanoAODTools
     cd ../
     mkdir variablecalculator
