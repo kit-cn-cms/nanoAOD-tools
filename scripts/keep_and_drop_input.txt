@@ -1,5 +1,6 @@
 # this is a comment
-drop *
-keep Muon*
-keep Electron*
-keep Jet*
+#drop *
+#keep Muon*
+#keep Electron*
+#keep Jet*
+#keep EventMass

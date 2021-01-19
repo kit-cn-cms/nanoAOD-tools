@@ -139,6 +139,8 @@ class PostProcessor:
             if hasattr(m, 'writeHistFile') and m.writeHistFile:
                 m.beginJob(histFile=self.histFile,
                            histDirName=self.histDirName)
+            if hasattr(m, 'cutflowpath'):
+                m.beginJob(cutflowpath=self.outputDir)
             else:
                 m.beginJob()
 

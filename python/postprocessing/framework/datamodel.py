@@ -51,6 +51,10 @@ class Event:
         if "[" in expr:  # unclear why this is needed, but otherwise for some arrays x[i] == 0 for all i > 0
             formula.GetNdata()
         return formula.go()
+    
+    def GetListOfBranches(self):
+        self.branches = self._tree.GetListOfBranches()
+        return self.branches
 
 
 class Object:

@@ -70,11 +70,15 @@ def eventLoop(
         entries = len(eventRange)
     if maxEvents > 0:
         entries = min(entries, maxEvents)
-
+    # inputTree.Print("*Jet*")
     for ie, i in enumerate(range(entries) if eventRange == None else eventRange):
         if maxEvents > 0 and ie >= maxEvents:
             break
         e = Event(inputTree, i)
+        # e = inputTree.GetEntry(i)
+        # print("NJets", e.nJet)
+        # print(type(e))
+
         clearExtraBranches(inputTree)
         doneEvents += 1
         ret = True
