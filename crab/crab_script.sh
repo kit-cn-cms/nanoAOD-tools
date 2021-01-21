@@ -5,8 +5,8 @@ if [ "`tty`" != "not a tty" ]; then
   echo "YOU SHOULD NOT RUN THIS IN INTERACTIVE, IT DELETES YOUR LOCAL FILES"
 else
 
-echo "ENV..................................."
-env 
+# echo "ENV..................................."
+# env 
 echo "VOMS"
 voms-proxy-info -all
 echo "CMSSW BASE, python path, pwd"
@@ -23,5 +23,12 @@ mv module $CMSSW_BASE/module
 mv python $CMSSW_BASE/python
 
 echo Found Proxy in: $X509_USER_PROXY
-python crab_script.py $1
+# python crab_script.py $1
+
+options = "${@:2}" | sed -r 's/[=]+/ /g'
+echo $options
+python crab_script.py $1 $options
+echo $PWD 
+ls -l
+cat FrameworkJobReport.xml
 fi

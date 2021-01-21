@@ -44,6 +44,7 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
+    # print(options.imports)
     if options.friend:
         if options.cut or options.json:
             raise RuntimeError(
@@ -90,5 +91,8 @@ if __name__ == "__main__":
                       longTermCache=options.longTermCache,
                       maxEntries=options.maxEntries,
                       firstEntry=options.firstEntry,
-                      outputbranchsel=options.branchsel_out)
+                      outputbranchsel=options.branchsel_out,
+                      provenance=True,
+                      fwkJobReport=True
+                  )
     p.run()

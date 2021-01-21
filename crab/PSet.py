@@ -13,5 +13,6 @@ process.source.fileNames = [
 ]
 process.maxEvents = cms.untracked.PSet(input=cms.untracked.int32(10))
 process.output = cms.OutputModule("PoolOutputModule",
-                                  fileName=cms.untracked.string('tree.root'))
+                                #   fileName=cms.untracked.string('tree.root')
+                                  )
 process.out = cms.EndPath(process.output)

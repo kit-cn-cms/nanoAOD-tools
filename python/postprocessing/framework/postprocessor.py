@@ -199,8 +199,9 @@ class PostProcessor:
 
             # prepare output file
             if not self.noOut:
-                outFileName = os.path.join(self.outputDir, os.path.basename(
-                    fname).replace(".root", outpostfix + ".root"))
+                # outFileName = os.path.join(self.outputDir, os.path.basename(
+                    # fname).replace(".root", outpostfix + ".root"))
+                outFileName = os.path.join(self.outputDir, "tree.root")
                 outFile = ROOT.TFile.Open(
                     outFileName, "RECREATE", "", compressionLevel)
                 outFileNames.append(outFileName)
@@ -208,8 +209,10 @@ class PostProcessor:
                     outFile.SetCompressionAlgorithm(compressionAlgo)
                 # prepare output tree
                 if self.friend:
+                    print("doing only friend output")
                     outTree = FriendOutput(inFile, inTree, outFile)
                 else:
+                    print("doing full output")
                     outTree = FullOutput(
                         inFile,
                         inTree,
@@ -255,7 +258,7 @@ class PostProcessor:
             m.endJob()
 
         print("Total time %.1f sec. to process %i events. Rate = %.1f Hz." % ((time.time() - t0), totEntriesRead, totEntriesRead / (time.time() - t0)))
-
+        print(self.haddFileName)
         if self.haddFileName:
             haddnano = "./haddnano.py" if os.path.isfile(
                 "./haddnano.py") else "haddnano.py"

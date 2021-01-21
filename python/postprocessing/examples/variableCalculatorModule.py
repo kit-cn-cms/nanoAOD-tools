@@ -17,7 +17,7 @@ from PhysicsTools.variablecalculator.cutflow.CutFlow import CutFlow
 
 
 class variableCalculatorModule(Module):
-    def __init__(self):
+    def __init__(self, test=""):
         self.var_calc = VariableCalculator()
         self.jet_tag_sel = JetSelection()
         self.lep_sel = LeptonSelection()
@@ -26,8 +26,12 @@ class variableCalculatorModule(Module):
         self.trigger_filter_mc = TriggerFilterMC()
         self.cutflowpath = ""
         self.cutflow = CutFlow()
+        self.TestOption =""
+        pass
 
-
+    def setOptions(self, test = ""):
+        self.testOption = test
+        print("successfully passed test option: " + self.testOption)
         pass
 
     def beginJob(self, cutflowpath):
@@ -124,4 +128,4 @@ class variableCalculatorModule(Module):
 
 # define modules using the syntax 'name = lambda : constructor' to avoid having them loaded when not needed
 
-variableCalculatorModuleConstr = lambda: variableCalculatorModule()
+variableCalculatorModuleConstr = lambda: variableCalculatorModule("TEST")
