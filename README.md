@@ -11,14 +11,14 @@ In order to run the KIT VariableCalculator follow these instructions to set up e
     cd variablecalculator
     mkdir python
     cd python
-    git clone --branch runII_2017_nano ssh://git@gitlab.cern.ch:7999/esarauer/variablecalculator.git .
+    git clone --branch runII_2017_nano https://gitlab.cern.ch/kit-cn-cms/variablecalculator.git .
     cd ../../    
     scram b
 
 The variableCalculator module can be run using the nanoAOD postprocessor via
 
     cd NanoAODTools/scripts
-    python nano_postproc.py outTest inFile.root -I PhysicsTools.NanoAODTools.postprocessing.examples.variableCalculatorModule variableCalculatorModuleConstr --max-entries 10000 --bo keep_and_drop_input.txt --friend
+    python nano_postproc.py outTest inFile.root -I PhysicsTools.NanoAODTools.postprocessing.examples.variableCalculatorModule variableCalculatorModuleConstr --max-entries 10000 --bo keep_and_drop_input.txt
 
 For more Information read the nanoAOD-tools documentation below.
 
