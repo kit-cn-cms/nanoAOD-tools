@@ -1,8 +1,9 @@
 # KIT specific setup instructions
 In order to run the KIT VariableCalculator follow these instructions to set up everything:
 
-    cmsrel CMSSW_10_2_18 
-    cd $CMSSW_BASE/src
+    export CMSSW_VERSION="CMSSW_10_2_18"
+    cmsrel $CMSSW_VERSION 
+    cd $CMSSW_VERSION/src
     cmsenv
     git clone --branch KIT-VarCalc-ttH git@github.com:kit-cn-cms/nanoAOD-tools.git PhysicsTools/NanoAODTools
     cd PhysicsTools/NanoAODTools
@@ -11,9 +12,9 @@ In order to run the KIT VariableCalculator follow these instructions to set up e
     cd variablecalculator
     mkdir python
     cd python
-    git clone --branch runII_2017_nano https://gitlab.cern.ch/kit-cn-cms/variablecalculator.git .
+    git clone --branch runII_2017_nano ssh://git@gitlab.cern.ch:7999/kit-cn-cms/variablecalculator.git .
     cd ../../    
-    scram b
+    scram b    
 
 The variableCalculator module can be run using the nanoAOD postprocessor via
 
