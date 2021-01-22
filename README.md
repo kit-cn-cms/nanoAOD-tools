@@ -12,7 +12,7 @@ In order to run the KIT VariableCalculator follow these instructions to set up e
     cd variablecalculator
     mkdir python
     cd python
-    git clone --branch runII_2017_nano ssh://git@gitlab.cern.ch:7999/kit-cn-cms/variablecalculator.git .
+    git clone --branch Run2_2017_nanoTools ssh://git@gitlab.cern.ch:7999/kit-cn-cms/variablecalculator.git .
     cd ../../    
     scram b    
 
