@@ -18,7 +18,7 @@ class PostProcessor:
             self, outputDir, inputFiles, cut=None, branchsel=None, modules=[],
             compression="LZMA:9", friend=False, postfix=None, jsonInput=None,
             noOut=False, justcount=False, provenance=False, haddFileName=None,
-            fwkJobReport=False, histFileName=None, histDirName=None,
+            fwkJobReport=True, histFileName=None, histDirName=None,
             outputbranchsel=None, maxEntries=None, firstEntry=0, prefetch=False,
             longTermCache=False
     ):
@@ -199,9 +199,8 @@ class PostProcessor:
 
             # prepare output file
             if not self.noOut:
-                # outFileName = os.path.join(self.outputDir, os.path.basename(
-                    # fname).replace(".root", outpostfix + ".root"))
-                outFileName = os.path.join(self.outputDir, "tree.root")
+                outFileName = os.path.join(self.outputDir, os.path.basename(fname).replace(".root", outpostfix + ".root"))
+                #outFileName = os.path.join(self.outputDir, "tree.root")
                 outFile = ROOT.TFile.Open(
                     outFileName, "RECREATE", "", compressionLevel)
                 outFileNames.append(outFileName)
