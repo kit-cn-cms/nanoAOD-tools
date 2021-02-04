@@ -3,6 +3,7 @@ import os
 import sys
 import PSet
 import glob
+import ast
 
 from PhysicsTools.NanoAODTools.postprocessing.framework.postprocessor import *
 from importlib import import_module
@@ -29,6 +30,7 @@ from optparse import OptionParser
 parser = OptionParser(usage="")
 parser.add_option("-t", "--test", dest="test", type="string", default="THIS IS A TEST",
                   help="Testoption")
+
 parser.add_option("-I", "--import", dest="imports", type="string", default=[], action="append",
                   nargs=2, help="Import modules (python package, comma-separated list of ")
 parser.add_option("--noRedoJEC", dest="noRedoJEC", default=False, action="store_true",
@@ -41,18 +43,38 @@ parser.add_option("--JEC", dest="JECscheme",
                 )
 parser.add_option("-e", "--era", dest="era", type="string", default="2017",
                   help="Specify era of the dataset. default: 2017")
-parser.add_option("--isData", dest="isData", default=False, action="store_true",
+# parser.add_option("--isData", dest="isData", default=False, action="store_true",
+parser.add_option("--isData", dest="isData",type="string", default="False",
                   help="Specify if dataset is real data.")
-
+parser.add_option("--noSyst", dest="noSyst",type="string", default="False",
+                  help="Set if you don't want to create branches with JES varied quantities.")
+parser.add_option("--local","-l", dest="runlocally", default=False, action="store_true",
+                  help="set this if testing locally without crab")
 
 (options, args) = parser.parse_args()
 
+
 options.imports = [('PhysicsTools.NanoAODTools.postprocessing.examples.variableCalculatorModule', 'variableCalculatorModuleConstr')]
+
+print("#"*10)
+print("The following options are set:")
+pprint(ast.literal_eval(options.__str__()))
+print("#"*10)
+noSyst = False
+isData = False
+if options.noSyst.lower() == "true":
+    noSyst = True
+if options.isData.lower() == "true":
+    isData = True
 
 if not options.noRedoJEC:
     # jetmetCorrector = createJMECorrector(isMC=True, dataYear=2017, jesUncert="Merged", applyHEMfix=False) 
-    jetmetCorrector = createJMECorrector(isMC=not options.isData, dataYear=options.era, jesUncert=options.JECscheme, applyHEMfix="2018" in options.era ) 
-    jecs = ["nom", "jerUp", "jerDown"] + ["jes" + s + "Up" for s in jetmetCorrector().jesUncertainties] + ["jes" + s + "Down" for s in jetmetCorrector().jesUncertainties]
+    if noSyst:
+        jetmetCorrector = createJMECorrector(isMC=not isData, dataYear=options.era, jesUncert="Total", applyHEMfix="2018" in options.era ) 
+        jecs = ["nom"]
+    else:
+        jetmetCorrector = createJMECorrector(isMC=not isData, dataYear=options.era, jesUncert=options.JECscheme, applyHEMfix="2018" in options.era ) 
+        jecs = ["nom", "jerUp", "jerDown"] + ["jes" + s + "Up" for s in jetmetCorrector().jesUncertainties] + ["jes" + s + "Down" for s in jetmetCorrector().jesUncertainties]
     print("doing following JEC uncs:")
     print(jecs)
 
@@ -93,53 +115,36 @@ for mod, names in options.imports:
 print("running following modules")
 print(modules)
 
-# p = PostProcessor(outputDir = ".",
-#                   inputFiles = inputFiles(),
-#                 #   cut = "",
-#                   modules=modules,
-#                   provenance=True,
-#                   fwkJobReport=True,
-#                   jsonInput=runsAndLumis(),
-#                   # maxEntries = 2000,
-#                   friend = False,
-#                   haddFileName = "tree.root",
-#                   outputbranchsel="keepOut.txt"
-#                   )
-# p.run()
+if not options.runlocally:
+    p = PostProcessor(outputDir = ".",
+                    inputFiles = inputFiles(),
+                    #   cut = "",
+                    modules=modules,
+                    provenance=True,
+                    fwkJobReport=True,
+                    jsonInput=runsAndLumis(),
+                    # maxEntries = 2000,
+                    friend = False,
+                    haddFileName = "tree.root",
+                    outputbranchsel="keepOut.txt"
+                    )
+    p.run()
 
+else:
+    p = PostProcessor(outputDir = ".",
+                      inputFiles = ["inFile.root"],
+                    #   cut = "",
+                      modules=modules,
+                      provenance=True,
+                      fwkJobReport=True,
+                      # jsonInput=runsAndLumis(),
+                      maxEntries = 2000,
+                      friend = False,
+                      haddFileName = "tree.root",
+                      outputbranchsel="keepOut.txt",
+                      )
+    p.run()
 
-p = PostProcessor(outputDir = ".",
-                  inputFiles = ["inFile.root"],
-                #   cut = "",
-                  modules=modules,
-                  provenance=True,
-                  fwkJobReport=True,
-                  # jsonInput=runsAndLumis(),
-                  # maxEntries = 2000,
-                  friend = False,
-                  haddFileName = "tree.root",
-                  outputbranchsel="keepOut.txt",
-                  maxEntries=100000
-                  # maxEntries=1
-                  )
-p.run()
-
-# p = PostProcessor(outdir, args,
-#                     cut=options.cut,
-#                     branchsel=options.branchsel_in,
-#                     modules=modules,
-#                     compression=options.compression,
-#                     friend=options.friend,
-#                     postfix=options.postfix,
-#                     jsonInput=options.json,
-#                     noOut=options.noOut,
-#                     justcount=options.justcount,
-#                     prefetch=options.prefetch,
-#                     longTermCache=options.longTermCache,
-#                     maxEntries=options.maxEntries,
-#                     firstEntry=options.firstEntry,
-#                     outputbranchsel=options.branchsel_out)
-# p.run()
 
 
 

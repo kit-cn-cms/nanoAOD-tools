@@ -25,9 +25,11 @@ mv python $CMSSW_BASE/python
 echo Found Proxy in: $X509_USER_PROXY
 # python crab_script.py $1
 
-options = "${@:2}" | sed -r 's/[=]+/ /g'
-echo $options
-python crab_script.py $1 $options
+# options = "${@:2}" | sed -r 's/[=]+/ /g'
+# echo $options
+# python crab_script.py $1 $options
+echo python crab_script.py $@
+python crab_script.py $@
 echo $PWD 
 ls -l
 cat FrameworkJobReport.xml
