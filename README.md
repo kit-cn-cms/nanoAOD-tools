@@ -1,5 +1,6 @@
-# KIT specific setup instructions
-In order to run the KIT VariableCalculator follow these instructions to set up everything:
+# KIT-CN-CMS setup for nanoAOD post production
+
+In order to run the post processing of nanoOAD for usage in analyses of the KIT-CN-CMS group follow these instructions to set up everything:
 
     export CMSSW_VERSION="CMSSW_10_2_18"
     cmsrel $CMSSW_VERSION 
@@ -8,20 +9,13 @@ In order to run the KIT VariableCalculator follow these instructions to set up e
     git clone --branch KIT-VarCalc-ttH git@github.com:kit-cn-cms/nanoAOD-tools.git PhysicsTools/NanoAODTools
     cd PhysicsTools/NanoAODTools
     cd ../
-    mkdir variablecalculator
-    cd variablecalculator
+    mkdir snape
+    cd snape
     mkdir python
     cd python
     git clone --branch Run2_2017_nanoTools ssh://git@gitlab.cern.ch:7999/kit-cn-cms/variablecalculator.git .
     cd ../../    
     scram b    
-
-The variableCalculator module can be run using the nanoAOD postprocessor via
-
-    cd NanoAODTools/scripts
-    python nano_postproc.py outTest inFile.root -I PhysicsTools.NanoAODTools.postprocessing.examples.variableCalculatorModule variableCalculatorModuleConstr --max-entries 10000 --bo keep_and_drop_input.txt
-
-For more Information read the nanoAOD-tools documentation below.
 
 
 
