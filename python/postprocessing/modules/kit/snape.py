@@ -13,8 +13,12 @@ from PhysicsTools.snape.selections.LeptonSelection  import LeptonSelection
 from PhysicsTools.snape.selections.METSelection     import METSelection
 from PhysicsTools.snape.selections.TriggerFilterMC  import TriggerFilterMC
 from PhysicsTools.snape.selections.BasicTriggerMC   import BasicTriggerMC
+
+from PhysicsTools.snape.weights.GenWeights          import GenWeights
+
 from PhysicsTools.snape.cutflow.CutFlow             import CutFlow
 
+import os 
 
 class Snape(Module):
     def __init__(self, test=""):
@@ -27,6 +31,10 @@ class Snape(Module):
         self.met_sel            = METSelection()
         self.basic_trigger_mc   = BasicTriggerMC()
         self.trigger_filter_mc  = TriggerFilterMC()
+
+        # module for calculating and storing weights before selections
+        self.weightpath         = ""
+        self.weights_incl       = GenWeights()
 
         # cutflow
         self.cutflowpath    = ""
@@ -61,6 +69,10 @@ class Snape(Module):
         self.cutflowpath         = os.path.join(cutflowpath,"cutflow.txt")
         self.cutflow.output_file = self.cutflowpath
         print("cutflow path: {}".format(self.cutflowpath))
+
+        self.weightpath               = os.path.join(cutflowpath, "genWeights.root")
+        self.weights_incl.output_file = self.weightpath
+        self.weights_incl.initWeightSums()
         pass
 
     def endJob(self):
@@ -130,6 +142,7 @@ class Snape(Module):
         print("INFO: Initialized {} branches.".format(nBranches))
 
     def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
+        self.weights_incl.writeSummary()
         pass
 
     def analyze(self, event):
@@ -139,7 +152,8 @@ class Snape(Module):
         # # global cutflow
         self.cutflow += 1
 
-
+        # add inclusive weights
+        self.weights_incl += event
 
         # Trigger Selection
         triggersel = (self.basic_trigger_mc.apply_basic_trigger_mc(event) and \
