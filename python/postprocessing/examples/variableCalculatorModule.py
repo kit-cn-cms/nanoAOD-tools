@@ -47,8 +47,10 @@ class variableCalculatorModule(Module):
         self.out = wrappedOutputTree
         
         # init scalar branches
+        integer_list = ["N_Jets", "N_TightLeptons", "N_TightMuons", "N_TightElectrons", "N_BTagsM", "Evt_ID", "Evt_Lumi", "Evt_Run", "N_GenBJets", "GenEvt_I_TTPlusCC", "GenEvt_I_TTPlusBB"]
         for key in self.var_calc.output_values:
-            if key == "N_Jets" or key =="N_TightLeptons":
+            # btags m dazu
+            if any(key == x for x in integer_list):
                 self.out.branch(key, "I")
             else:
                 self.out.branch(key, "F")
