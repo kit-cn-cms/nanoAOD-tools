@@ -1,0 +1,1 @@
+python nano_postproc.py ntuples_nano_ttHH_to4b_2017 -s _nano_ttHH_to4b_2017 /nfs/dust/cms/user/esarauer/ttHH_samples/TTHHTo4b_2017_v6_nano/*.root -I PhysicsTools.NanoAODTools.postprocessing.examples.variableCalculatorModule variableCalculatorModuleConstr --bo keep_and_drop_input.txt

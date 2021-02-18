@@ -1,0 +1,1 @@
+python nano_postproc.py ntuples_nano_ttto4b_2017 -s _ttto4b_2017 /pnfs/desy.de/cms/tier2/store/user/swieland/TT4b_TuneCP5_13TeV_madgraph_pythia8/KIT_Nanov6_2017/201221_112720/0000/*.root -I PhysicsTools.NanoAODTools.postprocessing.examples.variableCalculatorModule variableCalculatorModuleConstr --bo keep_and_drop_input.txt
