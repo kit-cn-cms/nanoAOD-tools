@@ -90,10 +90,26 @@ class Snape(Module):
                 # init scalar branches
                 for key in self.var_calc.output_ValueswJEC[jec]:
 
-                    # counter variables have to start with N_
-                    # TODO improve that
-                    if "N_" in key:
+                    # define list of integer variables
+                    integer_list = [
+                        "N_Jets", 
+                        "N_TightLeptons", 
+                        "N_TightMuons", 
+                        "N_TightElectrons", 
+                        "N_BTagsM", 
+                        "Evt_ID", 
+                        "Evt_Lumi", 
+                        "Evt_Run",  
+                        "N_GenBJets", 
+                        "GenEvt_I_TTPlusCC", 
+                        "GenEvt_I_TTPlusBB"
+                        ]
+                    
+                    if any(key == x for x in integer_list):
                         self.out.branch(key, "I")
+                    elif key.startswith("N_"):
+                        self.out.branch(key, "I")
+
                     else:
                         self.out.branch(key, "F")
                     print("init branch {}".format(key))
