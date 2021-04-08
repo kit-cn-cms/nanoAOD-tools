@@ -123,16 +123,24 @@ class Snape(Module):
                     for key in outputAr:
 
                         # determine index variable
-                        index_var = "n"+key
+                        index_var = "N_"+key.split("_")[0]
                         if "Jet" in key:
-                            index_var = "N_Jets_"+jec
+                            index_var = "N_Jets"
                         elif "Lepton" in key:
                             index_var = "N_TightLeptons"
+                        elif "Muon" in key:
+                            index_var = "N_TightMuons"
+                        elif "Electron" in key:
+                            index_var = "N_TightElectrons"
+                        index_var+= "_"+jec
 
                         # initialize branch
                         self.out.branch(key, "F", 1, index_var)
                         print("init branch {} with index {}".format(key, index_var))
                         nBranches +=1
+
+
+
                 except:
                     print("WARNING: No array branches defined in Snape! Make sure this makes sense!")
             # --- jec loop
