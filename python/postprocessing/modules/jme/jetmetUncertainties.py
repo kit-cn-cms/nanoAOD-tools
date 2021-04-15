@@ -53,6 +53,7 @@ class jetmetUncertaintiesProducer(Module):
         # factors and uncertainties yet
         # --------------------------------------------------------------------
 
+        jesUncertainties = [j for j in jesUncertainties if not j == "HEMIssue"]
         self.jesUncertainties = jesUncertainties
 
         # Calculate and save uncertainties on T1Smear MET if this flag is set
@@ -126,8 +127,10 @@ class jetmetUncertaintiesProducer(Module):
                 ]
                 sources = [x[1:-1] for x in sources]
                 self.jesUncertainties = sources
+
         if applyHEMfix:
             self.jesUncertainties.append("HEMIssue")
+            
 
         # Define the jet recalibrator
         self.jetReCalibrator = JetReCalibrator(
