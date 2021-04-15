@@ -24,17 +24,20 @@ class Snape(Module):
         self.cutflow = CutFlow()
 
     def setup(self, configName = "config_testAnalysis", dataEra = "2017", 
-                    runType = "legacy", isData = False, jecs = [""]):
+                    runType = "legacy", isData = False, isTopNanoAOD = False,
+                    sampleName = None, jecs = [""]):
 
         # load config module
         configImport = "PhysicsTools.snape.configs.{}".format(configName)
         print("loading config {}".format(configImport))
         configModule = importlib.import_module(configImport)
         config  = configModule.Config(
-            dataEra = dataEra,
-            runType = runType,
-            isData  = isData,
-            jecs    = jecs)
+            dataEra      = dataEra,
+            runType      = runType,
+            isData       = isData,
+            isTopNanoAOD = isTopNanoAOD,
+            sampleName   = sampleName,
+            jecs         = jecs)
 
         # init snape module
         self.snape = VariableCalculator()
@@ -50,7 +53,7 @@ class Snape(Module):
 
         weightpath = os.path.join(cutflowpath, "genWeights.root")
         self.weights.output_file = weightpath
-        self.weights.initWeightSums()
+        self.weights.initWeightSums(self.snape.config.sampleName)
         print("genWeights path: {}".format(weightpath))
         pass
 
@@ -117,6 +120,7 @@ class Snape(Module):
 
             # write scalar branches
             for var in base.vc.variables:
+                #print(var, getattr(base.vc, var))
                 self.out.fillBranch(var+"_"+sys, getattr(base.vc, var))
 
             # Write array branches
