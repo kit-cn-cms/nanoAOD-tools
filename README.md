@@ -1,23 +1,6 @@
 # KIT-CN-CMS setup for nanoAOD post production
 
-In order to run the post processing of nanoOAD for usage in analyses of the KIT-CN-CMS group follow these instructions to set up everything:
-
-    export CMSSW_VERSION="CMSSW_10_2_18"
-    cmsrel $CMSSW_VERSION 
-    cd $CMSSW_VERSION/src
-    cmsenv
-    git clone --branch KIT-VarCalc-ttH git@github.com:kit-cn-cms/nanoAOD-tools.git PhysicsTools/NanoAODTools
-    cd PhysicsTools/NanoAODTools
-    cd ../
-    mkdir snape
-    cd snape
-    mkdir python
-    cd python
-    git clone --branch Run2_2017_nanoTools ssh://git@gitlab.cern.ch:7999/kit-cn-cms/variablecalculator.git .
-    cd ../../    
-    scram b    
-
-
+In order to run the post processing of nanoOAD for usage in analyses of the KIT-CN-CMS group follow checkout the instructions in the README of the [smeacol](https://gitlab.cern.ch/kit-cn-cms/smeacol) repository.
 
 # nanoAOD-tools
 Tools for working with NanoAOD (requiring only python + root, not CMSSW)
