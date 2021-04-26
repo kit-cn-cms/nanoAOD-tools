@@ -95,28 +95,43 @@ class Snape(Module):
         # add inclusive weights
         self.weights += event
 
-        # selections
-        isSelected = self.snape.config.isSelected(event, self.cutflow)
-        if not isSelected:
-            return False
-        # convert to dict if only singular value is returned
-        if not isinstance(isSelected,  dict):
-            isSelected = {sys: isSelected for sys in self.snape.config.jecs}
-        if not any(isSelected.values()):
+        # preselections that do not depend on any cleaned objects
+        isPreselected = self.snape.config.isPreSelected(event, self.cutflow)
+        if not isPreselected:
             return False
 
-        # calc vars
-        # reset first
-        self.snape.resetOutput()
-        # for each jec source
+        # first jec source
+        firstCall      = True
+        anyJECSelected = False
+        # reset object container
+        base.oc.reset()
+        # loop over jec sources
         for sys in self.snape.config.jecs:
-            self.snape.resetOutput()
+            # set members of snape
+            self.snape.sys       = sys
+            self.snape.firstCall = firstCall
+            # initialize event (performs object cleaning here)
+            self.snape.event     = event
 
-            # figure out if event is triggered with jec
-            if isSelected[sys]:
-                self.snape.sys   = sys
-                self.snape.event = event
-                self.snape.calculate()
+            # perform selections which are not JEC dependent:
+            if firstCall:
+                isBaseSelected = self.snape.config.isBaseSelected(event, self.cutflow)
+                # event does not pass base selection
+                if not isBaseSelected:
+                    return False
+                # first call is done now so set it to false
+                firstCall = False
+
+            # check if event with that JEC is selected
+            isJECSelected = self.snape.config.isJECSelected(event, self.cutflow, sys)
+            # dont return false yet, only continue loop 
+            if not isJECSelected:
+                continue
+            anyJECSelected = True
+
+            # now we want to finally calculate some variables
+            self.snape.resetOutput()
+            self.snape.calculate()
 
             # write scalar branches
             for var in base.vc.variables:
@@ -126,7 +141,9 @@ class Snape(Module):
             # Write array branches
             for arr in base.vc.arrays:
                 self.out.fillBranch(arr+"_"+sys, getattr(base.vc, arr))
-
+            
+        if not anyJECSelected:
+            return False
         return True
 
 
