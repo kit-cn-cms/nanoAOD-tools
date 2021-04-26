@@ -88,6 +88,9 @@ class Snape(Module):
     def analyze(self, event):
         """process event, return True (go to next module) or False (fail, go to next event)"""
 
+        # reset output variables
+        self.snape.resetOutput()
+
         # do selections
         # # global cutflow
         self.cutflow += 1
@@ -102,6 +105,7 @@ class Snape(Module):
 
         # first jec source
         firstCall      = True
+        firstCalc      = True
         anyJECSelected = False
         # reset object container
         base.oc.reset()
@@ -130,8 +134,10 @@ class Snape(Module):
             anyJECSelected = True
 
             # now we want to finally calculate some variables
-            self.snape.resetOutput()
-            self.snape.calculate()
+            self.snape.resetJECOutput()
+            self.snape.calculate(firstCalc)
+            # if we arrived here we calculated something for the first time so set it to false
+            firstCalc = False
 
             # write scalar branches
             for var in base.vc.variables:
