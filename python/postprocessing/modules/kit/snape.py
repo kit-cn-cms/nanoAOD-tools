@@ -133,6 +133,14 @@ class Snape(Module):
             isJECSelected = self.snape.config.isJECSelected(event, self.cutflow, sys)
             # dont return false yet, only continue loop 
             if not isJECSelected:
+                # write default values for scalar branches
+                for var in base.vc.variables:
+                    #print(var, getattr(base.vc, var))
+                    self.out.fillBranch(var+"_"+sys, base.vc.getDefault(var))
+
+                # Write default values for array branches
+                for arr in base.vc.arrays:
+                    self.out.fillBranch(arr+"_"+sys, base.vc.getDefaultArray(var))
                 continue
             anyJECSelected = True
 
