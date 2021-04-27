@@ -51,10 +51,11 @@ class Snape(Module):
         self.cutflow.output_file = self.cutflowpath
         print("cutflow path: {}".format(self.cutflowpath))
 
-        weightpath = os.path.join(cutflowpath, "genWeights.root")
-        self.weights.output_file = weightpath
-        self.weights.initWeightSums(self.snape.config.sampleName)
-        print("genWeights path: {}".format(weightpath))
+        if not self.snape.config.isData:
+            weightpath = os.path.join(cutflowpath, "genWeights.root")
+            self.weights.output_file = weightpath
+            self.weights.initWeightSums(self.snape.config.sampleName)
+            print("genWeights path: {}".format(weightpath))
         pass
 
     def endJob(self):
@@ -82,7 +83,8 @@ class Snape(Module):
         print("INFO: Initialized {} branches.".format(nBranches))
 
     def endFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
-        self.weights.writeSummary()
+        if not self.snape.config.isData:
+            self.weights.writeSummary()
         pass
 
     def analyze(self, event):
@@ -96,7 +98,8 @@ class Snape(Module):
         self.cutflow += 1
 
         # add inclusive weights
-        self.weights += event
+        if not self.snape.config.isData:
+            self.weights += event
 
         # preselections that do not depend on any cleaned objects
         isPreselected = self.snape.config.isPreSelected(event, self.cutflow)
