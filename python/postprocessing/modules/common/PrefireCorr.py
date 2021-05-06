@@ -104,7 +104,7 @@ class PrefCorr(Module):
                 jetpf = 1.0
                 PhotonInJet = []
 
-                jetpt = jet.pt
+                jetpt = jet.pt_nom
                 if self.UseEMpT:
                     jetpt *= (jet.chEmEF + jet.neEmEF)
 
