@@ -64,19 +64,33 @@ class Snape(Module):
     def beginFile(self, inputFile, outputFile, inputTree, wrappedOutputTree):
         self.out = wrappedOutputTree
         nBranches = 0
-        
+        for var in base.vc.variables:
+            self.out.branch(
+                var, 
+                base.vc.varTypes[var])
+            print("init branch {}".format(var))
+            nBranches += 1
+        for arr in base.vc.arrays:
+            self.out.branch(
+                arr, 
+                base.vc.varTypes[arr], 1, 
+                base.vc.arrayCounters[arr])
+            print("init array {}".format(arr))
+            nBranches += 1
+
+
         for sys in self.snape.config.jecs:
-            for var in base.vc.variables:
+            for var in base.vc.JESvariables:
                 self.out.branch(
                     var+"_"+sys, 
                     base.vc.varTypes[var])
                 print("init branch {}".format(var+"_"+sys))
                 nBranches += 1
-            for arr in base.vc.arrays:
+            for arr in base.vc.JESarrays:
                 self.out.branch(
                     arr+"_"+sys, 
                     base.vc.varTypes[arr], 1, 
-                    base.vc.arrayCounters[arr]+"_"+sys)
+                    base.vc.JESarrayCounters[arr]+"_"+sys)
                 print("init array {}".format(arr+"_"+sys))
                 nBranches += 1
 
@@ -133,13 +147,12 @@ class Snape(Module):
             isJECSelected = self.snape.config.isJECSelected(event, self.cutflow, sys)
             # dont return false yet, only continue loop 
             if not isJECSelected:
-                # write default values for scalar branches
-                for var in base.vc.variables:
+                 # write default values for scalar branches
+                for var in base.vc.JESvariables:
                     #print(var, getattr(base.vc, var))
                     self.out.fillBranch(var+"_"+sys, base.vc.getDefault(var))
-
                 # Write default values for array branches
-                for arr in base.vc.arrays:
+                for arr in base.vc.JESarrays:
                     self.out.fillBranch(arr+"_"+sys, base.vc.getDefaultArray(var))
                 continue
             anyJECSelected = True
@@ -147,20 +160,29 @@ class Snape(Module):
             # now we want to finally calculate some variables
             self.snape.resetJECOutput()
             self.snape.calculate(firstCalc)
+            if firstCalc:
+                # write scalar branches
+                for var in base.vc.variables:
+                    #print(var, getattr(base.vc, var))
+                    self.out.fillBranch(var, getattr(base.vc, var))
+                # Write array branches
+                for arr in base.vc.arrays:
+                    self.out.fillBranch(arr, getattr(base.vc, arr))
+
             # if we arrived here we calculated something for the first time so set it to false
             firstCalc = False
 
             # write scalar branches
-            for var in base.vc.variables:
+            for var in base.vc.JESvariables:
                 #print(var, getattr(base.vc, var))
                 self.out.fillBranch(var+"_"+sys, getattr(base.vc, var))
 
             # Write array branches
-            for arr in base.vc.arrays:
+            for arr in base.vc.JESarrays:
                 self.out.fillBranch(arr+"_"+sys, getattr(base.vc, arr))
-            
         if not anyJECSelected:
             return False
+
         return True
 
 
