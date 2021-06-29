@@ -45,6 +45,7 @@ def matchObjectCollection(objs,
                           dRmax=0.4,
                           presel=lambda x, y: True):
     pairs = {}
+    print(objs)
     if len(objs) == 0:
         return pairs
     if len(collection) == 0:

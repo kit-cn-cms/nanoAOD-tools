@@ -118,6 +118,8 @@ class Collection:
             self._len = getattr(event, lenVar)
         else:
             self._len = getattr(event, "n" + prefix)
+        print(self._len)
+        print(type(self._len))
         self._cache = {}
 
     def __getitem__(self, index):
@@ -131,4 +133,4 @@ class Collection:
         return ret
 
     def __len__(self):
-        return self._len
+        return int(self._len)
