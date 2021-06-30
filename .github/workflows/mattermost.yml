@@ -10,4 +10,4 @@ jobs:
         echo "{\"text\":\"testing github action :tada:\"}" > mattermost.json
     - uses: mattermost/action-mattermost-notify@1.0.2
       env:
-        MATTERMOST_WEBHOOK_URL: ${{ secrets.https://mattermost.web.cern.ch/hooks/8t1opxha5bd4xr5iifd63eajkc }}
+        MATTERMOST_WEBHOOK_URL: ${{ https://mattermost.web.cern.ch/hooks/8t1opxha5bd4xr5iifd63eajkc }}
