@@ -7,7 +7,7 @@ jobs:
     steps:
     - name: Mattermost
       run: |
-        echo "{\"text\":\"testing github action :tada:\"}" > mattermost.json
+        echo "{\"text\":\"Something new was pushed to nanoAOD-tools :tada:\"}" > mattermost.json
     - uses: mattermost/action-mattermost-notify@1.0.2
       env:
         MATTERMOST_WEBHOOK_URL: https://mattermost.web.cern.ch/hooks/8t1opxha5bd4xr5iifd63eajkc
