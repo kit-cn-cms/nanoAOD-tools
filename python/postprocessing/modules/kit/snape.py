@@ -153,7 +153,7 @@ class Snape(Module):
                     self.out.fillBranch(var+"_"+sys, base.vc.getDefault(var))
                 # Write default values for array branches
                 for arr in base.vc.JESarrays:
-                    self.out.fillBranch(arr+"_"+sys, base.vc.getDefaultArray(var))
+                    self.out.fillBranch(arr+"_"+sys, base.vc.getDefaultArray(arr))
                 continue
             anyJECSelected = True
 
